@@ -21,7 +21,10 @@ export class SpotifyService {
       queryURL = `${queryURL}?${params.join('&')}`;
     }
 
-    return this.http.request(queryURL).pipe(map((res: any) => res.json()));
+    return this.http.request(queryURL)
+      .pipe(
+        map((res: any) => res.json())
+      );
   }
 
   search(query: string, type: string): Observable<any[]> {
