@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Http, Response } from '@angular/http';
+import { Http, Headers, Response, RequestOptions } from '@angular/http';
 import { Observable, Subject, ReplaySubject, from, of, range } from 'rxjs';
 import { map, filter, switchMap } from 'rxjs/operators';
+import { environment } from '../environments/environment';
 
 /**
  * SpotifyService works querying the Spotify Web API
@@ -21,7 +22,16 @@ export class SpotifyService {
       queryURL = `${queryURL}?${params.join('&')}`;
     }
 
-    return this.http.request(queryURL)
+    const apiKey = environment.spotifyApiKey;
+    const headers = new Headers({
+      Authorization: `Bearer ${apiKey}`
+    });
+
+    const options = new RequestOptions({
+      headers: headers
+    });
+
+    return this.http.request(queryURL, options)
       .pipe(
         map((res: any) => res.json())
       );
